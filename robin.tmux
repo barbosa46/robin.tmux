@@ -1,6 +1,4 @@
 PLUGIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-mkdir -p $PLUGIN_DIR/data
-
-tmux bind-key m popup -E "${PLUGIN_DIR}/scripts/toggle_opencode.sh"
+mkdir -p data
+tmux bind-key m run-shell "${PLUGIN_DIR}/scripts/toggle_opencode.sh"
 

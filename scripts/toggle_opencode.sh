@@ -6,6 +6,8 @@ CURRENT_DIR=$(tmux display-message -p "#{pane_current_path}")
 SESSION_NAME="opencode_$(basename $CURRENT_DIR)"
 PANE_ID_FILE="$PLUGIN_PATH/data/opencode_$(basename $CURRENT_DIR)_pane_id"
 
+CURRENT_PANE=$(tmux display-message -p "#{pane_id}")
+VISIBLE_PANES=$(tmux list-panes -F "#{pane_id}")
 
 pane_exists() {
   local pane="$1"
@@ -30,16 +32,10 @@ fi
 PANE_ID=$(cat "$PANE_ID_FILE")
 
 if [ -z "$PANE_ID" ]; then
-  echo "Pane ID do gemini não encontrado!"
+  echo "Pane ID not found!"
   exit 1
 fi
 
-# Current pane where the cursor is located
-CURRENT_PANE=$(tmux display-message -p "#{pane_id}")
-
-
-# Check if the gemini pane is already visible in the current window
-VISIBLE_PANES=$(tmux list-panes -F "#{pane_id}")
 
 if echo "$VISIBLE_PANES" | grep -q "$PANE_ID"; then
   # If already visible → move the panel to the shared session and update
